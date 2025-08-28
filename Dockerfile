@@ -55,19 +55,11 @@ RUN bash ./konekta-build-pre-processor.sh
 
 COPY ./overrides ./
 
-
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
   elif [ -f package-lock.json ]; then npm ci; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
-  fi
-
-# Copy the dev icons for the dev build
-# if NEXT_PUBLIC_APP_HOST_URL is not set to konekta.ch
-RUN \
-  if [ "${NEXT_PUBLIC_APP_HOST_URL}" != "https://konekta.ch" ]; then \
-    cp /app/public/dev-icons/* /app/public/; \
   fi
 
 RUN sh create_build_info.sh

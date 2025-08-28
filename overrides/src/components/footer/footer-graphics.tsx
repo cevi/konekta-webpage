@@ -5,7 +5,7 @@ export const FooterGraphic: React.FC = () => (
         xmlns="http://www.w3.org/2000/svg"
         xmlSpace="preserve"
         viewBox={'0 0 2187 353'}
-        style={{ width: '100%', height: 'auto' }}
+        style={{ width: '100%', height: 'auto', transform: 'scaleX(-1)' }}
     >
         <path
             fill="#323394"
