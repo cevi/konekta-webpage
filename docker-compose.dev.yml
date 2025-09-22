@@ -43,21 +43,21 @@ services:
         - traefik.http.routers.konekta-dev-router-http.entrypoints=web
         - traefik.http.routers.konekta-dev-router-http.middlewares=redirect-to-https@file
 
-        - traefik.http.routers.konekta-dev-router.rule=Host(`konekta.cevi.tools`) || Host(`konekta.ch`)
+        - traefik.http.routers.konekta-dev-router.rule=Host(`konekta.cevi.tools`) || Host(`konekta.ch`) || Host(`www.konekta.ch`)
         - traefik.http.routers.konekta-dev-router.entrypoints=websecure
         - traefik.http.routers.konekta-dev-router.service=konekta-dev
 
         - traefik.http.services.konekta-dev.loadbalancer.server.port=3000
 
         # Apply the retry middleware to this router
-        - traefik.http.routers.konekta-dev-router.middlewares=retry-middleware
+        - traefik.http.routers.konekta-dev-router.middlewares=retry-middleware,konekta-to-non-www
 
         # Add Traefik healthcheck labels
         - traefik.http.services.konekta-dev.loadbalancer.healthcheck.path=/status
         - traefik.http.services.konekta-dev.loadbalancer.healthcheck.interval=5s
         - traefik.http.services.konekta-dev.loadbalancer.healthcheck.timeout=3s
 
-        - traefik.http.middlewares.konekta-to-non-www.redirectregex.regex=^https://www.koenkta.ch/(.*)
+        - traefik.http.middlewares.konekta-to-non-www.redirectregex.regex=^https://www.konekta.ch/(.*)
         - traefik.http.middlewares.konekta-to-non-www.redirectregex.replacement=https://konekta.ch/$$$${1}
         - traefik.http.middlewares.konekta-to-non-www.redirectregex.permanent=true
 
@@ -234,3 +234,4 @@ networks:
   observability-net:
     driver: overlay
     attachable: true
+
