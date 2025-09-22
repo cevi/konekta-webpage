@@ -39,11 +39,11 @@ services:
         - traefik.http.middlewares.retry-middleware.retry.initialinterval=50ms
 
         # HTTP gets redirected to HTTPS
-        - traefik.http.routers.konekta-dev-router-http.rule=Host(`konekta.cevi.tools`)
+        - traefik.http.routers.konekta-dev-router-http.rule=Host(`konekta.cevi.tools`) || Host(`konekta.ch`) || Host(`www.konekta.ch`)
         - traefik.http.routers.konekta-dev-router-http.entrypoints=web
         - traefik.http.routers.konekta-dev-router-http.middlewares=redirect-to-https@file
 
-        - traefik.http.routers.konekta-dev-router.rule=Host(`konekta.cevi.tools`)
+        - traefik.http.routers.konekta-dev-router.rule=Host(`konekta.cevi.tools`) || Host(`konekta.ch`)
         - traefik.http.routers.konekta-dev-router.entrypoints=websecure
         - traefik.http.routers.konekta-dev-router.service=konekta-dev
 
@@ -57,13 +57,17 @@ services:
         - traefik.http.services.konekta-dev.loadbalancer.healthcheck.interval=5s
         - traefik.http.services.konekta-dev.loadbalancer.healthcheck.timeout=3s
 
+        - traefik.http.middlewares.konekta-to-non-www.redirectregex.regex=^https://www.koenkta.ch/(.*)
+        - traefik.http.middlewares.konekta-to-non-www.redirectregex.replacement=https://konekta.ch/$$$${1}
+        - traefik.http.middlewares.konekta-to-non-www.redirectregex.permanent=true
+
       resources:
         limits:
           cpus: '2.0'
           memory: 2048M
 
     volumes:
-      - /cluster/swarm/data/konekta-dev/next-cache:/app/.next/cache
+      - /cluster/dist_storage_insane/service_data/konekta-dev/next-cache:/app/.next/cache
 
     dns:
       - 8.8.8.8 # Replace with your desired DNS server
@@ -90,7 +94,7 @@ services:
     command:
       - --storageEngine=wiredTiger
     volumes:
-      - /cluster/swarm/data/konekta-dev/mongodb-data:/data/db
+      - /cluster/dist_storage_insane/service_data/konekta-dev/mongodb-data:/data/db
     logging:
       driver: none
 
@@ -98,7 +102,7 @@ services:
       - backend-net
 
   minio:
-    image: minio/minio
+    image: minio/minio:RELEASE.2025-07-23T15-54-02Z
 
     deploy:
       labels:
@@ -130,7 +134,7 @@ services:
       - .env
 
     volumes:
-      - /cluster/swarm/data/konekta-dev/minio-data:/data
+      - /cluster/dist_storage_insane/service_data/konekta-dev/minio-data:/data
 
     networks:
       - traefik-net
@@ -160,7 +164,7 @@ services:
       - .env
 
     volumes:
-      - /cluster/swarm/data/konekta-dev/postgres:/var/lib/postgresql/data
+      - /cluster/dist_storage_insane/service_data/konekta-dev/postgres:/var/lib/postgresql/data
 
     networks:
       - backend-net
@@ -169,7 +173,7 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - /cluster/swarm/data/konekta-dev/prometheus:/prometheus
+      - /cluster/dist_storage_insane/service_data/konekta-dev/prometheus:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -187,7 +191,7 @@ services:
     image: grafana/tempo:latest
     command: ['-config.file=/etc/tempo/tempo.yml']
     volumes:
-      - /cluster/swarm/data/konekta-dev/tempo:/tmp/tempo
+      - /cluster/dist_storage_insane/service_data/konekta-dev/tempo:/tmp/tempo
     configs:
       - source: tempo-config
         target: /etc/tempo/tempo.yml
@@ -197,7 +201,7 @@ services:
   loki:
     image: grafana/loki
     volumes:
-      - /cluster/swarm/data/konekta-dev/loki:/loki
+      - /cluster/dist_storage_insane/service_data/konekta-dev/loki:/loki
     command:
       - --config.file=/mnt/config/loki-config.yml
     configs:
