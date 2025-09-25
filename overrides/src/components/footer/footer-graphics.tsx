@@ -4,7 +4,7 @@ export const FooterGraphic: React.FC = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlSpace="preserve"
-        fill="#323394"
+        fill="#184189"
         style={{
             width: "100%",
             height: "auto",
