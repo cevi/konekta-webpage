@@ -11,7 +11,7 @@
 # (like `*`, `[`, `]`, `.`, `\`, `&`), you may need to escape them with a backslash.
 
 declare -a replacements=(
-  "**/*|conveniat27.cevi.tools|konekta.cevi.tools"
+  "**/*|conveniat27.cevi.tools|konekta.ch"
   "**/*|conveniat27.ch|konekta.ch"
   "**/*.tsx|conveniat27|Konekta"
   "**/*.ts|conveniat27|Konekta"

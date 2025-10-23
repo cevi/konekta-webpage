@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       args:
         - NEXT_PUBLIC_VAPID_PUBLIC_KEY=BIdxNEGnajiMrg8dh1EIM9R7ID8ZkCAq87R_jjD9Yq1AugXVKBLnaThnYnzodbCNPW9HYM_6YT5-54PIoRDyGhs
-        - NEXT_PUBLIC_APP_HOST_URL=https://konekta.cevi.tools
+        - NEXT_PUBLIC_APP_HOST_URL=https://konekta.ch
         - NEXT_PUBLIC_ENABLE_OFFLINE_SUPPORT=true
         - REPO_URL=https://github.com/cevi/conveniat-webpage/
         - BRANCH_NAME=dev
