@@ -9,7 +9,7 @@ services:
         - NEXT_PUBLIC_APP_HOST_URL=https://konekta.ch
         - NEXT_PUBLIC_ENABLE_OFFLINE_SUPPORT=true
         - REPO_URL=https://github.com/cevi/conveniat-webpage/
-        - BRANCH_NAME=dev
+        - BRANCH_NAME=main
 
     deploy:
       replicas: 2
