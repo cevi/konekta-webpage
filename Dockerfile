@@ -44,6 +44,13 @@ ARG POSTHOG_PROJECT_ID
 ARG NEXT_PUBLIC_ENABLE_OFFLINE_SUPPORT=false
 ENV NEXT_PUBLIC_ENABLE_OFFLINE_SUPPORT=${NEXT_PUBLIC_ENABLE_OFFLINE_SUPPORT}
 
+# Locales this deployment serves, as a comma separated list. Empty means all locales, which is
+# what conveniat27 ships; konekta only serves German and French. This must be available at build
+# time: Next inlines NEXT_PUBLIC_ variables into the client bundle, so setting it only in the
+# stack's .env leaves the language switchers offering English.
+ARG NEXT_PUBLIC_ENABLED_LOCALES=de,fr
+ENV NEXT_PUBLIC_ENABLED_LOCALES=${NEXT_PUBLIC_ENABLED_LOCALES}
+
 # Install git and bash
 RUN apk add --no-cache git bash
 
